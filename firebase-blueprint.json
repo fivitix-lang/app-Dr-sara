@@ -1,0 +1,95 @@
+{
+  "entities": {
+    "Patient": {
+      "title": "Patient",
+      "description": "Représente un patient de la clinique avec ses informations médicales et administratives.",
+      "type": "object",
+      "properties": {
+        "ficheNo": { "type": "string" },
+        "cin": { "type": "string" },
+        "dateCreation": { "type": "string", "format": "date-time" },
+        "nom": { "type": "string" },
+        "prenom": { "type": "string" },
+        "nomJeuneFille": { "type": "string" },
+        "sexe": { "type": "string", "enum": ["Masculin", "Féminin"] },
+        "dateNaissance": { "type": "string", "format": "date" },
+        "profession": { "type": "string" },
+        "adresse": { "type": "string" },
+        "telephone": { "type": "string" },
+        "matriculeAssurance": { "type": "string" },
+        "validiteAssurance": { "type": "string", "format": "date" },
+        "typeAssurance": { "type": "string", "enum": ["CNSS", "CNOPS", "RAMED", "Privée", "Aucune"] },
+        "codeAPCI": { "type": "string" },
+        "groupeSanguin": { "type": "string", "enum": ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] },
+        "createdBy": { "type": "string" }
+      },
+      "required": ["ficheNo", "nom", "prenom", "sexe", "cin"]
+    },
+    "Consultation": {
+      "title": "Consultation",
+      "description": "Une visite médicale d'un patient.",
+      "type": "object",
+      "properties": {
+        "patientId": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "motif": { "type": "string" },
+        "poids": { "type": "number" },
+        "tension": { "type": "string" },
+        "temperature": { "type": "number" },
+        "frequenceCardiaque": { "type": "number" },
+        "diagnostic": { "type": "string" },
+        "ordonnance": { "type": "string" },
+        "notes": { "type": "string" },
+        "montant": { "type": "number" },
+        "statutPaiement": { "type": "string", "enum": ["Payé", "Partiel", "Non payé"] },
+        "createdBy": { "type": "string" }
+      },
+      "required": ["patientId", "date", "motif"]
+    },
+    "Appointment": {
+      "title": "Rendez-vous",
+      "description": "Un rendez-vous planifié pour un patient.",
+      "type": "object",
+      "properties": {
+        "patientId": { "type": "string" },
+        "patientName": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "motif": { "type": "string" },
+        "statut": { "type": "string", "enum": ["Confirmé", "En attente", "Annulé", "Terminé"] },
+        "createdBy": { "type": "string" }
+      },
+      "required": ["patientId", "date", "statut"]
+    },
+    "MedicalHistory": {
+      "title": "Antécédents Médicaux",
+      "description": "Historique médical, chirurgical et allergique du patient.",
+      "type": "object",
+      "properties": {
+        "patientId": { "type": "string" },
+        "type": { "type": "string", "enum": ["Médicaux", "Chirurgicaux", "Allergies", "Familiaux"] },
+        "description": { "type": "string" },
+        "date": { "type": "string" },
+        "createdBy": { "type": "string" }
+      },
+      "required": ["patientId", "type", "description"]
+    }
+  },
+  "firestore": {
+    "/patients/{patientId}": {
+      "schema": "Patient",
+      "description": "Patients de la clinique"
+    },
+    "/consultations/{consultationId}": {
+      "schema": "Consultation",
+      "description": "Historique des consultations"
+    },
+    "/appointments/{appointmentId}": {
+      "schema": "Appointment",
+      "description": "Calendrier des rendez-vous"
+    },
+    "/medical_history/{historyId}": {
+      "schema": "MedicalHistory",
+      "description": "Antécédents médicaux"
+    }
+  }
+}
